@@ -3,7 +3,7 @@
   "version": "",
   "private": true,
   "scripts": {
-    "start": "node src/server/MongoDB.js && vue-cli-service build",
+    "start": "node src/server/MongoDB.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
