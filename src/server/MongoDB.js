@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const MongoClient = require("mongodb").MongoClient;
 const { ObjectId } = require("mongodb");
 
+let port = process.env.PORT||2000;
+
 const ItemSchema = new mongoose.Schema({
   name: String,
   country: String,
@@ -80,6 +82,6 @@ router.patch("/productReload/:id", async (ctx) => {
 });
 
 app.use(router.routes());
-app.listen(2000, () => {
+app.listen(port, () => {
   console.log("Server running on port 2000");
 });
