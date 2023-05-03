@@ -48,13 +48,13 @@ export default {
     loading: false,
   }),
   async created() {
-    axios.get("/products").then((r) => {
+    axios.get("https://e-commerce-vue.herokuapp.com/products").then((r) => {
       r.data.forEach((element) => {
         if (element.rating.count == 0) {
           axios.delete(`/deleteProduct/${element._id}`);
         }
       });
-      axios.get("/products").then((r) => {
+      axios.get("https://e-commerce-vue.herokuapp.com/products").then((r) => {
         this.products = r.data;
         this.loading = true;
       });
