@@ -22,7 +22,7 @@ const router = new Router();
 
 app.use(bodyParser());
 
-router.get("/products", async (ctx) => {
+router.get("/api/products", async (ctx) => {
   const client = await MongoClient.connect(
     "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-shop"
   );
@@ -33,7 +33,7 @@ router.get("/products", async (ctx) => {
   ctx.body = readyViem;
 });
 
-router.post("/success", async (ctx) => {
+router.post("/api/success", async (ctx) => {
   const client = await MongoClient.connect(
     "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-users"
   );
@@ -43,7 +43,7 @@ router.post("/success", async (ctx) => {
   await client.close();
 });
 
-router.delete("/deleteProduct/:id", async (ctx) => {
+router.delete("/api/deleteProduct/:id", async (ctx) => {
   const id = ctx.params.id;
   const client = await MongoClient.connect(
     "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-shop"
@@ -62,7 +62,7 @@ router.delete("/deleteProduct/:id", async (ctx) => {
   await client.close();
 });
 
-router.patch("/productReload/:id", async (ctx) => {
+router.patch("/api/productReload/:id", async (ctx) => {
   const client = await MongoClient.connect(
     "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-shop"
   );
