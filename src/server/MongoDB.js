@@ -4,6 +4,9 @@ const bodyParser = require("koa-bodyparser");
 const mongoose = require("mongoose");
 const MongoClient = require("mongodb").MongoClient;
 const { ObjectId } = require("mongodb");
+const cors = require("cors");
+
+app.use(cors());
 
 let port = process.env.PORT || 2000;
 
