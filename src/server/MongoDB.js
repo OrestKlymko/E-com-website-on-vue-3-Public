@@ -4,9 +4,7 @@ const bodyParser = require("koa-bodyparser");
 const mongoose = require("mongoose");
 const MongoClient = require("mongodb").MongoClient;
 const { ObjectId } = require("mongodb");
-const corsMiddleWare = require("./cors");
-
-
+const cors = require("cors");
 
 let port = process.env.PORT || 2000;
 
@@ -84,7 +82,13 @@ router.patch("/api/productReload/:id", async (ctx) => {
 
   client.close();
 });
-app.use(corsMiddleWare);
+app.use(
+  cors({
+    origin: "https://e-commerce-deploy-vue.vercel.app",
+    optionsSuccessStatus: 200,
+  })
+);
+
 app.use(router.routes());
 app.listen(port, () => {
   console.log("Server running on port " + port);
