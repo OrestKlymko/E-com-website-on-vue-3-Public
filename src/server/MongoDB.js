@@ -21,7 +21,7 @@ const ItemModel = mongoose.model("Item", ItemSchema);
 
 const app = new Koa();
 const router = new Router();
-app.use(corsMiddleWare);
+
 
 app.use(bodyParser());
 
@@ -84,7 +84,7 @@ router.patch("/api/productReload/:id", async (ctx) => {
 
   client.close();
 });
-
+app.use(corsMiddleWare);
 app.use(router.routes());
 app.listen(port, () => {
   console.log("Server running on port " + port);
