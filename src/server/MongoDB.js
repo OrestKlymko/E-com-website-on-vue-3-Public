@@ -21,6 +21,18 @@ const app = new Koa();
 const router = new Router();
 
 app.use(bodyParser());
+app.use(
+  cors({
+    origin: "https://e-commerce-deploy-vue.vercel.app",
+    credentials: true,
+    allowMethods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
+
+app.use(async (ctx, next) => {
+  ctx.response.setHeader("Access-Control-Allow-Origin", "*");
+  await next();
+});
 
 router.get("/api/products", async (ctx) => {
   const client = await MongoClient.connect(
@@ -81,18 +93,7 @@ router.patch("/api/productReload/:id", async (ctx) => {
 
   client.close();
 });
-app.use(
-  cors({
-    origin: "https://e-commerce-deploy-vue.vercel.app",
-    credentials: true,
-    allowMethods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
 
-app.use(async (ctx, next) => {
-  ctx.response.setHeader("Access-Control-Allow-Origin", "*");
-  await next();
-});
 
 app.use(router.routes());
 app.listen(port, () => {
