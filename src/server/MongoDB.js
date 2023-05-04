@@ -20,7 +20,6 @@ const ItemModel = mongoose.model("Item", ItemSchema);
 const app = new Koa();
 const router = new Router();
 
-
 app.use(bodyParser());
 
 router.get("/api/products", async (ctx) => {
@@ -85,9 +84,15 @@ router.patch("/api/productReload/:id", async (ctx) => {
 app.use(
   cors({
     origin: "https://e-commerce-deploy-vue.vercel.app",
-    optionsSuccessStatus: 200,
+    credentials: true,
+    allowMethods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
+
+app.use(async (ctx, next) => {
+  ctx.response.setHeader("Access-Control-Allow-Origin", "*");
+  await next();
+});
 
 app.use(router.routes());
 app.listen(port, () => {
