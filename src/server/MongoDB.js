@@ -50,6 +50,7 @@ router.post("/api/products", async (ctx) => {
   const client = await MongoClient.connect(
     "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-shop"
   );
+  ctx.set("Access-Control-Allow-Origin", "*");
   const db = client.db("e-com-shop");
   const item = new ItemModel(ctx.request.body);
   await db.collection("users").insertOne(item);
@@ -73,6 +74,7 @@ router.delete("/api/products/:id", async (ctx) => {
   });
 
   console.log("Result:", result);
+  ctx.set("Access-Control-Allow-Origin", "*");
   ctx.body = { success: true, result };
 
   await client.close();
@@ -92,7 +94,7 @@ router.patch("/api/products/:id", async (ctx) => {
   const options = { upsert: true };
   const update = { $set: { ...item } };
   await collection.findOneAndUpdate(filter, update, options);
-
+  ctx.set("Access-Control-Allow-Origin", "*");
   ctx.status = 204;
 
   await client.close();
