@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const MongoClient = require("mongodb").MongoClient;
 const { ObjectId } = require("mongodb");
 const corsMiddleWare = require("./cors");
-app.use(corsMiddleWare);
+
 
 
 let port = process.env.PORT || 2000;
@@ -21,6 +21,7 @@ const ItemModel = mongoose.model("Item", ItemSchema);
 
 const app = new Koa();
 const router = new Router();
+app.use(corsMiddleWare);
 
 app.use(bodyParser());
 
