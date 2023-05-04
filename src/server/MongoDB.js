@@ -20,7 +20,6 @@ const ItemModel = mongoose.model("Item", ItemSchema);
 const app = new Koa();
 const router = new Router();
 
-app.use(bodyParser());
 app.use(
   cors({
     origin: "https://e-commerce-deploy-vue.vercel.app",
@@ -33,7 +32,7 @@ app.use(async (ctx, next) => {
   ctx.response.setHeader("Access-Control-Allow-Origin", "*");
   await next();
 });
-
+app.use(bodyParser());
 router.get("/api/products", async (ctx) => {
   const client = await MongoClient.connect(
     "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-shop"
@@ -91,7 +90,7 @@ router.patch("/api/products/:id", async (ctx) => {
 
   ctx.status = 204;
 
-  client.close();
+  await client.close();
 });
 
 app.use(router.routes());
