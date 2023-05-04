@@ -46,9 +46,9 @@ router.get("/api/products", async (ctx) => {
 
 router.post("/api/products", async (ctx) => {
   const client = await MongoClient.connect(
-    "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-users"
+    "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-shop"
   );
-  const db = client.db("e-com-users");
+  const db = client.db("e-com-shop");
   const item = new ItemModel(ctx.request.body);
   await db.collection("users").insertOne(item);
   await client.close();
