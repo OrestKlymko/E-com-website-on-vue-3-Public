@@ -20,20 +20,20 @@ const ItemModel = mongoose.model("Item", ItemSchema);
 const app = new Koa();
 const router = new Router();
 
-app.use(
-  cors({
-    origin: "https://e-commerce-deploy-vue.vercel.app",
-    credentials: true,
-    allowMethods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
-
-app.use(async (ctx, next) => {
-  ctx.response.setHeader("Access-Control-Allow-Origin", "*");
-  await next();
+app.use((ctx, next) => {
+  const allowedOrigins = [
+    "http://localhost:2000",
+    "https://e-commerce-deploy-vue.vercel.app/",
+  ];
+  const origin = ctx.request.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    ctx.response.set("Access-Control-Allow-Origin", origin);
+  }
+  return next();
 });
-app.use(bodyParser());
+
 router.get("/api/products", async (ctx) => {
+
   const client = await MongoClient.connect(
     "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-shop"
   );
@@ -41,10 +41,12 @@ router.get("/api/products", async (ctx) => {
   const collection = db.collection("all-product");
   const readyViem = await collection.find().toArray();
   await client.close();
+  ctx.set("Access-Control-Allow-Origin", "*");
   ctx.body = readyViem;
 });
 
 router.post("/api/products", async (ctx) => {
+
   const client = await MongoClient.connect(
     "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-shop"
   );
@@ -52,9 +54,11 @@ router.post("/api/products", async (ctx) => {
   const item = new ItemModel(ctx.request.body);
   await db.collection("users").insertOne(item);
   await client.close();
+
 });
 
 router.delete("/api/products/:id", async (ctx) => {
+
   const id = ctx.params.id;
   const client = await MongoClient.connect(
     "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-shop"
@@ -70,10 +74,12 @@ router.delete("/api/products/:id", async (ctx) => {
 
   console.log("Result:", result);
   ctx.body = { success: true, result };
+
   await client.close();
 });
 
 router.patch("/api/products/:id", async (ctx) => {
+
   const client = await MongoClient.connect(
     "mongodb+srv://orestklymko2020:orik1997@userdata.7crkxxp.mongodb.net/e-com-shop"
   );
@@ -85,7 +91,6 @@ router.patch("/api/products/:id", async (ctx) => {
   const filter = { _id: ObjectId.createFromHexString(id) };
   const options = { upsert: true };
   const update = { $set: { ...item } };
-
   await collection.findOneAndUpdate(filter, update, options);
 
   ctx.status = 204;
@@ -94,6 +99,7 @@ router.patch("/api/products/:id", async (ctx) => {
 });
 
 app.use(router.routes());
+app.use(bodyParser());
 app.listen(port, () => {
   console.log("Server running on port " + port);
 });
